@@ -1,25 +1,50 @@
+import datetime 
+
 def main():
     
     f= open("draft.md","r")
+    header= open("intro.html","r")
 
-
+    today= datetime.date.today()
+    asyncPost = open(today.strftime("%Y-%b") + ".md","w+")
+    tocSnippet = open(today.strftime("%y-%b") + "_toc.md", "w+")
+    tocSnippet.write("<ul>\n")
     f1 = f.readlines()
-
+    counterH2 = 0
     for x in f1:
-        header3 = x.find("###",0,5)
-        if header3 < 0:
-            print(x)
-        else:
+        linePrefix= x.split(" ")[0]
+        if linePrefix == "###":
             ## Find the text
             ## remove spaces
             ## take first 20 chars
             ## create an anchor
             formattedText = x.lstrip()
             formattedText = formattedText.rstrip()
-            
-            print(formattedText)
+            formattedText = formattedText.title()
+            startTitle = formattedText.index(" ")
+            formattedText = formattedText.replace(" ","")
+            anchorName = formattedText[startTitle:startTitle+20]
+            #print anchorName
 
+            asyncPost.write("<a name='" + anchorName + "'><h3>" + x.title().rstrip()[startTitle:] + "</h3></a>")
+            tocSnippet.write("            <li><a href='#"+anchorName+"'>" + x.title().rstrip()[startTitle:].lstrip() + "</a>\n")
+        elif linePrefix == "##":
+            startTitle = x.index(" ")
+            if counterH2 > 0:
+                tocSnippet.write("        </ul>\n")
+            tocSnippet.write("    <li>" + x.title().rstrip()[startTitle:] + "\n")
+            tocSnippet.write("        <ul>\n")
+            counterH2 = counterH2 + 1
 
+        else:
+            asyncPost.write(x)
+            # need code to check if there is a gif and put an exlamation point in front of it. 
+    tocSnippet.write("        </ul>\n")
+    tocSnippet.write("</ul>\n")
+    asyncPost.close()
+    tocSnippet.close()
+    f.close()
+    header.close()
 
 if __name__=="__main__":
     main()
