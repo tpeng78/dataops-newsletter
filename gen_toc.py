@@ -1,14 +1,24 @@
+# parse giphy images
+# add footer 
+
 import datetime 
 
 def main():
     
     f= open("draft.md","r")
     header= open("intro.html","r")
+    footer=open("footer.html","r")
 
     today= datetime.date.today()
     asyncPost = open(today.strftime("%Y-%b") + ".md","w+")
     tocSnippet = open(today.strftime("%y-%b") + "_toc.md", "w+")
     tocSnippet.write("<ul>\n")
+
+    headerlines = header.readlines()
+
+    for x in headerlines:
+        asyncPost.write(x)
+
     f1 = f.readlines()
     counterH2 = 0
     for x in f1:
@@ -41,6 +51,12 @@ def main():
             # need code to check if there is a gif and put an exlamation point in front of it. 
     tocSnippet.write("        </ul>\n")
     tocSnippet.write("</ul>\n")
+
+    footerlines = footer.readlines()
+
+    for x in footerlines:
+        asyncPost.write(x)
+
     asyncPost.close()
     tocSnippet.close()
     f.close()
