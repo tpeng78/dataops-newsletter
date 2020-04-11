@@ -40,8 +40,8 @@ def main():
             # remove bolding in headers. this is not necessary. 
             x = x.replace("**","")
 
-            asyncPost.write("<a name='" + anchorName + "'><h3>" + x.title().rstrip()[startTitle:] + "</h3></a>")
-            tocSnippet.write("            <li><a href='#"+anchorName+"'>" + x.title().rstrip()[startTitle:].lstrip() + "</a>\n")
+            asyncPost.write("<a name='" + anchorName + "'><h3>" + x.rstrip()[startTitle:] + "</h3></a>")
+            tocSnippet.write("            <li><a href='#"+anchorName+"'>" + x.rstrip()[startTitle:].lstrip() + "</a>\n")
         elif linePrefix == "##":
             startTitle = x.index(" ")
             if counterH2 > 0:
