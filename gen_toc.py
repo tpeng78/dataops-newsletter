@@ -33,11 +33,13 @@ def main():
             formattedText = formattedText.title()
             startTitle = formattedText.index(" ")
             formattedText = formattedText.replace(" ","")
+            formattedText = formattedText.replace('**','')
             anchorName = formattedText[startTitle:startTitle+20]
+            anchorName = anchorName.replace('**','')
             #print anchorName
 
             asyncPost.write("<a name='" + anchorName + "'><h3>" + x.title().rstrip()[startTitle:] + "</h3></a>")
-            tocSnippet.write("            <li><a href='#"+anchorName+"'>" + x.title().rstrip()[startTitle:].lstrip() + "</a>\n")
+            tocSnippet.write("            <li><a href='#"+anchorName+"'>" + formattedText + "</a>\n")
         elif linePrefix == "##":
             startTitle = x.index(" ")
             if counterH2 > 0:
