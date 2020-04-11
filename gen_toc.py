@@ -1,4 +1,13 @@
-# parse giphy images
+# Takes a markdown file and then creates a table of contents based on the <h2> and <h3> headers. 
+# Current process is the following:
+#   1. create the newsletter in a quip document. 
+#   2. copy the section and then past into google docs
+#   3. run the convert2markdown script on google docs
+#   4. The markdown file is emailed to you
+#   5. copy the markdown file into ths root directory of this script and rename it to draft.md
+#   6. Take the final version of the output and past into async
+#
+# todo -  parse giphy images
 
 
 import datetime 
