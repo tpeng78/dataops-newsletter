@@ -11,6 +11,7 @@
 
 
 import datetime 
+import re 
 
 def main():
     
@@ -25,6 +26,7 @@ def main():
     toc_filename = today.strftime("%y-%b") + "_toc.md"
     tocSnippet = open(toc_filename, "w+")
     tocSnippet.write("<ul>\n")
+    giphy_regex_string = "(\[(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)\]\((http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)\))"
 
     headerlines = header.readlines()
 
@@ -69,8 +71,19 @@ def main():
             
             
             asyncPost.write(x)
+        elif linePrefix == "#":
+            startTitle = x.index(" ")
+            x = x.replace("**","")
 
+            # do not write this to Table of Contents            
+            # do not write to file. This is the header and will be the title in async. 
         else:
+            #assume that giphys are not in header lines
+            if re.search(giphy_regex_string, x):
+                print("match found!")
+                print(re.sub(giphy_regex_string, r"!\1", x))
+                x = re.sub(giphy_regex_string, r"!\1", x)
+
             asyncPost.write(x)
             # need code to check if there is a gif and put an exlamation point in front of it. 
     tocSnippet.write("        </ul>\n")
