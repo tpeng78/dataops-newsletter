@@ -1,5 +1,5 @@
 # parse giphy images
-# add footer 
+
 
 import datetime 
 
@@ -10,8 +10,11 @@ def main():
     footer=open("footer.html","r")
 
     today= datetime.date.today()
-    asyncPost = open(today.strftime("%Y-%b") + ".md","w+")
-    tocSnippet = open(today.strftime("%y-%b") + "_toc.md", "w+")
+    fileName = today.strftime("%Y-%b") + ".md"
+    finalFileName = today.strftime("%Y-%b") + "-final.md"
+    asyncPost = open(fileName,"w+")
+    toc_filename = today.strftime("%y-%b") + "_toc.md"
+    tocSnippet = open(toc_filename, "w+")
     tocSnippet.write("<ul>\n")
 
     headerlines = header.readlines()
@@ -44,11 +47,19 @@ def main():
             tocSnippet.write("            <li><a href='#"+anchorName+"'>" + x.rstrip()[startTitle:].lstrip() + "</a>\n")
         elif linePrefix == "##":
             startTitle = x.index(" ")
-            if counterH2 > 0:
-                tocSnippet.write("        </ul>\n")
-            tocSnippet.write("    <li>" + x.title().rstrip()[startTitle:] + "\n")
-            tocSnippet.write("        <ul>\n")
-            counterH2 = counterH2 + 1
+            x = x.replace("**","")
+
+            # Skip writing Executive Summary or The Details to the table of contents
+
+            if x.find("# Executive Summary") == -1 and x.find("# The Details") == -1:
+                if counterH2 > 0:
+                    tocSnippet.write("        </ul>\n")
+                tocSnippet.write("    <li>" + x.title().rstrip()[startTitle:] + "\n")
+                tocSnippet.write("        <ul>\n")
+                counterH2 = counterH2 + 1
+            
+            
+            asyncPost.write(x)
 
         else:
             asyncPost.write(x)
@@ -62,9 +73,27 @@ def main():
         asyncPost.write(x)
 
     asyncPost.close()
-    tocSnippet.close()
+
     f.close()
     header.close()
+    tocSnippet.close()
+
+
+    # reopen the file and insert the table of contents
+    new_toc_snippet = open(today.strftime("%y-%b") + "_toc.md", "r+")
+
+    draft = open(fileName,"r")
+    final = open(finalFileName, "w")
+    for x in draft: 
+        if x.find("# The Details") != -1: 
+            final.write(x)
+            for l in new_toc_snippet.readlines():
+                final.write(l)
+        else:
+            final.write(x)
+
+    final.close()
+    new_toc_snippet.close()
 
 if __name__=="__main__":
     main()
