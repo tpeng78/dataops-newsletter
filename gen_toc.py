@@ -7,6 +7,7 @@
 #   5. copy the markdown file into ths root directory of this script and rename it to draft.md
 #   6. Take the final version of the output and past into async
 #
+# to convert google docs to markdown use these directions: https://lifehacker.com/this-script-converts-google-documents-to-markdown-for-e-511746113 
 # todo -  parse giphy images
 
 
