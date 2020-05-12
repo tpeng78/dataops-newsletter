@@ -77,7 +77,7 @@ def main():
             x = x.replace("**","")
 
             # do not write this to Table of Contents            
-            # do not write to file. This is the header and will be the title in async. 
+            asyncPost.write(x)
         else:
             #assume that giphys are not in header lines
             if re.search(giphy_regex_string, x):
