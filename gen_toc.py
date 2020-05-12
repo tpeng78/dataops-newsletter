@@ -49,6 +49,10 @@ def main():
             startTitle = formattedText.index(" ")
             formattedText = formattedText.replace(" ","")
             formattedText = formattedText.replace('**','')
+            formattedText = formattedText.replace('**Summary: **','**Summary:** ')
+            formattedText = formattedText.replace('zones that will find value: **','zones that will find value:** ')
+            
+            formattedText = formattedText.replace('**','')
             anchorName = formattedText[startTitle:startTitle+20]
             anchorName = anchorName.replace('**','')
             
